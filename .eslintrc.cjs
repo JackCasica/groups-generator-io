@@ -5,7 +5,7 @@ module.exports = {
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended-type-checked",
         "next/core-web-vitals",
-        "plugin:react/all",
+        "plugin:react/recommended",
     ],
     ignorePatterns: [
         ".eslintrc.cjs",
@@ -38,6 +38,7 @@ module.exports = {
         "@typescript-eslint/no-unsafe-member-access": "off",
         "@typescript-eslint/no-unsafe-return": "off",
         "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx", ".tsx"] }],
+        "react/react-in-jsx-scope": 0,
         // END: Allow implicit `any`s
 
         // Allow async functions without await
