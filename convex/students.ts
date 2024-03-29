@@ -39,6 +39,7 @@ export const getStudentsByClass = query({
         //// Read the database as many times as you need here.
         //// See https://docs.convex.dev/database/reading-data.
         const queryResponse = await ctx.db.get(args.classId);
+        console.log(queryResponse, "🔴");
 
         if (!queryResponse) return [];
 
@@ -52,6 +53,8 @@ export const getStudentsByClass = query({
         );
 
         const existingStudents = students.filter((student) => student !== null) as Doc<"students">[];
+
+        console.log(existingStudents, "🔴🔴");
         return existingStudents;
     },
 });
