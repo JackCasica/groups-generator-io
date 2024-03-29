@@ -1,7 +1,8 @@
-import { type ClassValue, clsx } from "clsx";
-import { ForwardRefRenderFunction, forwardRef } from "react";
-import { twMerge } from "tailwind-merge";
 import { Doc } from "@/convex/_generated/dataModel";
+import { ClassValue, clsx, type } from "clsx";
+import { forwardRef, ForwardRefRenderFunction } from "react";
+import { twMerge } from "tailwind-merge";
+
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
@@ -42,7 +43,9 @@ export function shuffleArray<T>(array: T[]): T[] {
 }
 
 // Create groups of students based on either: 1) number of groups, or 2) number of students per group
-export function createGroups<T>(students: T[], numberOfGroups: number, studentsPerGroup: number): T[][] {
+export function createGroups<T>(students: T[], numberOfGroups: number, studentsPerGroup: number): T[][] | undefined {
+    if (!students) return undefined;
+
     const shuffledStudents = shuffleArray<T>(students);
 
     console.log(shuffledStudents);
@@ -59,6 +62,5 @@ export function createGroups<T>(students: T[], numberOfGroups: number, studentsP
             groups[i % numberOfGroups].push(shuffledStudents[i]);
         }
     }
-    console.log(groups);
     return groups;
 }
