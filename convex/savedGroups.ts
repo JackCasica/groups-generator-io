@@ -1,5 +1,6 @@
-import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
+
+import { mutation, query } from './_generated/server';
 
 export const createSavedGroup = mutation({
 	args: {
@@ -21,7 +22,7 @@ export const removeSavedGroup = mutation({
 		savedGroupId: v.id('savedGroups'),
 	},
 	handler: async (ctx, args) => {
-		await ctx.db.delete(args.savedGroupId);
+		return await ctx.db.delete(args.savedGroupId);
 	},
 });
 

@@ -1,19 +1,19 @@
-import React from 'react';
+import React from "react";
 import {
 	CardContent,
 	CardFooter,
 	CardHeader,
 	Card,
 	CardTitle,
-} from '@shadcn/card';
-import { Button } from '@shadcn/button';
-import { Student } from './Student';
-import { Droppable } from '@hello-pangea/dnd';
-import { Doc } from '@/convex/_generated/dataModel';
+} from "@shadcn/card";
+import { Button } from "@shadcn/button";
+import { Student } from "./Student";
+import { Droppable } from "@hello-pangea/dnd";
+import { Doc } from "@/convex/_generated/dataModel";
 type StudentGroupProps = {
-	students: Doc<'students'>[];
+	students: Doc<"students">[];
 	groupName: string;
-	studentGroups: Doc<'students'>[][];
+	studentGroups: Doc<"students">[][];
 };
 
 export const StudentGroup: React.FC<StudentGroupProps> = ({
@@ -25,7 +25,7 @@ export const StudentGroup: React.FC<StudentGroupProps> = ({
 		<Droppable droppableId={groupName}>
 			{(provided, snapshot) => (
 				<>
-					<Card className="bg-gray-600 border-0">
+					<Card className="bg-[#FDF6EB] border-0">
 						<CardHeader>
 							<CardTitle className="font-extrabold uppercase text-base">
 								Group {+groupName + 1}

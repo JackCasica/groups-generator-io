@@ -1,32 +1,34 @@
-'use client';
-import { useState } from 'react';
-import * as React from 'react';
-import { Check, ChevronsUpDown } from 'lucide-react';
+"use client";
+import { useState } from "react";
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
 
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
 	Command,
 	CommandEmpty,
 	CommandGroup,
 	CommandInput,
 	CommandItem,
-} from '@/components/ui/command';
+} from "@/components/ui/command";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-} from '@/components/ui/popover';
-import { useQuery } from 'convex/react';
-import { api } from '@/convex/_generated/api';
-import { useParams, useRouter } from 'next/navigation';
+} from "@/components/ui/popover";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useParams, useRouter } from "next/navigation";
 
 export function ClassDropdown() {
 	const { classId } = useParams();
 	const router = useRouter();
 	const [open, setOpen] = useState(false);
-	const [value, setValue] = useState('');
+	const [value, setValue] = useState("");
 	const classes = useQuery(api.classes.getClasses);
+
+	console.log(classes, "🟢");
 	if (!classes) {
 		return null;
 	}
@@ -45,7 +47,7 @@ export function ClassDropdown() {
 					>
 						{classId
 							? `${classDoc?.name} ( ${classDoc?.students.length} Students )`
-							: 'Select classes...'}
+							: "Select classes..."}
 						<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 					</Button>
 				</PopoverTrigger>
@@ -59,7 +61,7 @@ export function ClassDropdown() {
 									key={c._id}
 									value={c._id}
 									onSelect={(currentValue) => {
-										setValue(currentValue === value ? '' : currentValue);
+										setValue(currentValue === value ? "" : currentValue);
 										setOpen(false);
 
 										router.push(`/classes/${currentValue}`);
@@ -67,8 +69,8 @@ export function ClassDropdown() {
 								>
 									<Check
 										className={cn(
-											'mr-2 h-4 w-4',
-											value === c._id ? 'opacity-100' : 'opacity-0',
+											"mr-2 h-4 w-4",
+											value === c._id ? "opacity-100" : "opacity-0",
 										)}
 									/>
 									{c.name}

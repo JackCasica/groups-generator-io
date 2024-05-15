@@ -1,15 +1,15 @@
-'use client';
-import type { Id } from '@/convex/_generated/dataModel';
-import type React from 'react';
-import { useQuery } from 'convex/react';
-import { api } from '@/convex/_generated/api';
-import { Badge } from '@components/ui/badge';
-import { X } from 'lucide-react';
-import { Skeleton } from '@components/ui/skeleton';
-import { useState } from 'react';
-import { AddStudentForm } from '@components/AddStudentForm';
+"use client";
+import type { Id } from "@/convex/_generated/dataModel";
+import type React from "react";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Badge } from "@components/ui/badge";
+import { X } from "lucide-react";
+import { Skeleton } from "@components/ui/skeleton";
+import { useState } from "react";
+import { AddStudentForm } from "@components/AddStudentForm";
 type StudentBadgesProps = {
-	classId: Id<'classes'>;
+	classId: Id<"classes">;
 };
 
 export const StudentBadges: React.FC<StudentBadgesProps> = ({ classId }) => {
@@ -52,7 +52,7 @@ export const StudentBadges: React.FC<StudentBadgesProps> = ({ classId }) => {
 					{addStudentFormVisible ? (
 						<AddStudentForm classId={classId} />
 					) : (
-						'+ Add Student'
+						"+ Add Student"
 					)}
 				</Badge>
 			</ul>

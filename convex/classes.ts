@@ -1,39 +1,40 @@
-import { v } from 'convex/values';
+import { Id } from "./_generated/dataModel";
+import { v } from "convex/values";
+import { ConvexError } from "convex/values";
 
-import { internal } from './_generated/api';
-import { action, internalMutation, mutation, query } from './_generated/server';
-import { generateRandomEmoji, randomHexColor } from '../lib/util';
-import { Id } from './_generated/dataModel';
-import { ConvexError } from 'convex/values';
+import { generateRandomEmoji, randomHexColor } from "../lib/util";
+import { internal } from "./_generated/api";
+import { action, internalMutation, mutation, query } from "./_generated/server";
+
 // You can write data to the database via a mutation:
 export const createClass = internalMutation({
 	// Validators for arguments.
 	args: {
 		className: v.string(),
 		studentNames: v.optional(v.array(v.string())),
-		id: v.id('users'),
+		id: v.id("users"),
 	},
 
 	// Mutation implementation.
-	handler: async (ctx, args): Promise<Id<'classes'>> => {
+	handler: async (ctx, args): Promise<Id<"classes">> => {
 		//// Insert or modify documents in the database here.
 		//// Mutations can also read from the database like queries.
 		//// See https://docs.convex.dev/database/writing-data.
 
 		if (args.studentNames === undefined) {
-			throw new ConvexError('Student names are required');
+			throw new ConvexError("Student names are required");
 		}
 
 		// Create new student documents and get their ids
 		const newStudentsIds = await Promise.all(
 			args.studentNames?.map(async (studentName) => {
-				const newStudentId = await ctx.db.insert('students', {
+				const newStudentId = await ctx.db.insert("students", {
 					name: studentName,
 					rules: { avoid: null },
 					color: randomHexColor(),
 					placeholderEmoji: generateRandomEmoji(),
 				});
-				console.log('Added new student with id:', newStudentId);
+				console.log("Added new student with id:", newStudentId);
 				return newStudentId;
 			}),
 		);
@@ -46,7 +47,7 @@ export const createClass = internalMutation({
 		};
 
 		// Insert the new class document and get its id
-		const classConvexId = await ctx.db.insert('classes', newClass);
+		const classConvexId = await ctx.db.insert("classes", newClass);
 
 		// Store the class id in the user's document
 
@@ -65,7 +66,7 @@ export const createClass = internalMutation({
 export const addStudentToClass = mutation({
 	// Validators for arguments.
 	args: {
-		classId: v.id('classes'),
+		classId: v.id("classes"),
 		studentName: v.string(),
 	},
 
@@ -75,7 +76,7 @@ export const addStudentToClass = mutation({
 		//// Mutations can also read from the database like queries.
 		//// See https://docs.convex.dev/database/writing-data.
 
-		const newStudentId = await ctx.db.insert('students', {
+		const newStudentId = await ctx.db.insert("students", {
 			name: args.studentName,
 			rules: { avoid: null },
 			color: randomHexColor(),
@@ -109,23 +110,22 @@ export const addStudentToClass = mutation({
 export const getClasses = query({
 	// Query implementation.
 	handler: async (ctx) => {
-		//// Read the database as many times as you need here.
-		//// See https://docs.convex.dev/database/reading-data.
-
+		console.log("running", "🟢");
 		const user = await ctx.auth.getUserIdentity();
 
-		if (!user) return;
+		console.log(user, "🟢");
 
+		if (!user) return;
 		const userId = await ctx.db
-			.query('users')
-			.withIndex('by_clerkId', (q) => q.eq('clerkId', user.tokenIdentifier))
+			.query("users")
+			.withIndex("by_clerkId", (q) => q.eq("clerkId", user.tokenIdentifier))
 			.unique();
 
 		if (!userId) return;
 
 		const classes = await ctx.db
-			.query('classes')
-			.filter((q) => q.eq(q.field('user'), userId._id))
+			.query("classes")
+			.filter((q) => q.eq(q.field("user"), userId._id))
 			.collect();
 
 		return classes;
@@ -141,7 +141,7 @@ export const getClasses = query({
 export const getClassById = query({
 	// Validators for arguments.
 	args: {
-		id: v.id('classes'),
+		id: v.id("classes"),
 	},
 	// Query implementation.
 	handler: async (ctx, args) => {
@@ -163,11 +163,11 @@ export const getUserCreateClass = action({
 		studentNames: v.optional(v.array(v.string())),
 		className: v.string(),
 	},
-	handler: async (ctx, args): Promise<Id<'classes'>> => {
+	handler: async (ctx, args): Promise<Id<"classes">> => {
 		const userIdentity = await ctx.auth.getUserIdentity();
 
 		if (!userIdentity) {
-			throw new ConvexError('You must be logged in to create a class');
+			throw new ConvexError("You must be logged in to create a class");
 		}
 
 		const user = await ctx.runQuery(internal.users.getUserByClerkId, {
@@ -175,7 +175,7 @@ export const getUserCreateClass = action({
 		});
 
 		if (!user) {
-			throw new ConvexError('User not found');
+			throw new ConvexError("User not found");
 		}
 
 		const classId = await ctx.runMutation(internal.classes.createClass, {
@@ -185,7 +185,7 @@ export const getUserCreateClass = action({
 		});
 
 		if (!classId) {
-			throw new ConvexError('Unable to create class. Please try again later.');
+			throw new ConvexError("Unable to create class. Please try again later.");
 		}
 
 		return classId;

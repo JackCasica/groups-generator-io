@@ -15,6 +15,10 @@ import { SideNav } from "@/components/SideNav";
 import { ClassDropdown } from "@/components/ClassDropdown";
 import { StudentBadges } from "@/components/StudentBadges";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useQuery } from "convex/react";
+import { preloadQuery } from "convex/nextjs";
+import { api } from "@/convex/_generated/api";
+import Link from "next/link";
 
 const gilroy = Fontname({
 	src: [
@@ -81,10 +85,13 @@ export const metadata: Metadata = {
 
 export type LayoutProps = { children: ReactNode; params?: Params };
 
-export default function RootLayout({ children }: LayoutProps) {
+export default async function RootLayout({ children, params }: LayoutProps) {
+	console.log(params);
 	return (
-		<html lang='en'>
-			<body className={`${gilroy.variable} h-screen flex  font-gilroy bg-gray-800 relative`}>
+		<html lang="en">
+			<body
+				className={`${gilroy.variable} h-screen flex  font-gilroy bg-background-secondary relative`}
+			>
 				<DndContextProvider>
 					<ConvexClientProvider>
 						<TooltipProvider>
@@ -95,10 +102,17 @@ export default function RootLayout({ children }: LayoutProps) {
 							{/* {Object.keys(params).length === 0 && (
                             <div className="bg-background-secondary w-[130%] rounded-full h-full absolute -bottom-1/2 -rotate-12 -left-1/4"></div>
                         )} */}
-							<div className='w-64 p-4 bg-gray-800'>
-								<h1 className='text-white text-2xl font-bold'>GroupsGenerator.io</h1>
+							<div className="w-64 p-4 ">
+								<Link href="/">
+									<h1 className="text-white text-2xl font-bold">
+										GroupsGenerator.io
+									</h1>
+								</Link>
 								<ClassDropdown />
-								<StudentBadges classId='jh746bceesxrt1gp5v4mjtxh856k75rg' />
+								<StudentBadges
+									classId="jh746bceesxrt1gp5v4mjtxh856k75rg"
+									// preloadedClassId={preloadedClassId}
+								/>
 							</div>
 							{children}
 							{/* <DevToggle /> */}
